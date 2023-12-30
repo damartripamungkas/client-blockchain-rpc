@@ -9,7 +9,7 @@ type TypeParamInit = {
   reconnect?: {
     autoReconnect?: boolean
     delay?: number
-    mamaxAttempts?: number
+    maxAttempts?: number
   }
 }
 
