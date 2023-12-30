@@ -29,6 +29,7 @@ var http_default = (url, socketOpt) => {
   const on = () => {
   };
   const isReady = () => true;
+  const disconnect = () => true;
   const request = async (body) => {
     const init = {
       method: "POST",
@@ -40,7 +41,7 @@ var http_default = (url, socketOpt) => {
     const jsonData = await res.json();
     return jsonData;
   };
-  return { on, isReady, request };
+  return { on, isReady, disconnect, request };
 };
 
 // src/connect/ipc.ts
@@ -54,13 +55,14 @@ var ipc_default = (url, socketOpt, reconnectOpt) => {
     // overrides because is calling without agreement
   });
   const on = client["on"];
+  const disconnect = () => client.disconnect();
   const isReady = async () => {
     return new Promise((resolve) => {
       client.once("connect", () => resolve(true));
     });
   };
   const request = client["request"];
-  return { on, isReady, request };
+  return { on, disconnect, isReady, request };
 };
 
 // src/connect/ws.ts
@@ -74,13 +76,14 @@ var ws_default = (url, socketOpt, reconnectOpt) => {
     // overrides because is calling without agreement
   });
   const on = client["on"];
+  const disconnect = () => client.disconnect();
   const isReady = async () => {
     return new Promise((resolve) => {
       client.once("connect", () => resolve(true));
     });
   };
   const request = client["request"];
-  return { on, isReady, request };
+  return { on, disconnect, isReady, request };
 };
 
 // src/provider.ts
