@@ -11,7 +11,7 @@ type TypeParamInit = {
     reconnect?: {
         autoReconnect?: boolean;
         delay?: number;
-        mamaxAttempts?: number;
+        maxAttempts?: number;
     };
 };
 /**
@@ -41,7 +41,7 @@ declare const _default: {
         reconnect?: {
             autoReconnect?: boolean;
             delay?: number;
-            mamaxAttempts?: number;
+            maxAttempts?: number;
         };
     }) => {
         send: (data: {
