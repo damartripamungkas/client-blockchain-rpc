@@ -109,22 +109,9 @@ var provider_default = ({ urlRpc, socket, reconnect }) => {
   };
 };
 
-// src/wallet.ts
-import { TransactionFactory } from "@ethereumjs/tx";
-import { Common } from "@ethereumjs/common";
-var libEVM = {
-  signTx: (tx, pk) => {
-    const common = Common.custom({ chainId: tx["chainId"] });
-    const res = TransactionFactory.fromTxData(tx, { common }).sign(pk).serialize();
-    return res;
-  }
-};
-var wallet_default = { libEVM };
-
 // src/index.ts
-var src_default = { provider: provider_default, wallet: wallet_default };
+var src_default = { provider: provider_default };
 export {
   src_default as default,
-  provider_default as provider,
-  wallet_default as wallet
+  provider_default as provider
 };

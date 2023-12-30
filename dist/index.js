@@ -20,8 +20,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var src_exports = {};
 __export(src_exports, {
   default: () => src_default,
-  provider: () => provider_default,
-  wallet: () => wallet_default
+  provider: () => provider_default
 });
 module.exports = __toCommonJS(src_exports);
 
@@ -136,22 +135,9 @@ var provider_default = ({ urlRpc, socket, reconnect }) => {
   };
 };
 
-// src/wallet.ts
-var import_tx = require("@ethereumjs/tx");
-var import_common = require("@ethereumjs/common");
-var libEVM = {
-  signTx: (tx, pk) => {
-    const common = import_common.Common.custom({ chainId: tx["chainId"] });
-    const res = import_tx.TransactionFactory.fromTxData(tx, { common }).sign(pk).serialize();
-    return res;
-  }
-};
-var wallet_default = { libEVM };
-
 // src/index.ts
-var src_default = { provider: provider_default, wallet: wallet_default };
+var src_default = { provider: provider_default };
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
-  provider,
-  wallet
+  provider
 });

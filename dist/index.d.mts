@@ -1,20 +1,5 @@
 import * as web3_types from 'web3-types';
 
-type TypeValNum = string | bigint | number;
-type TypeTx = {
-    to?: string;
-    from?: string;
-    data?: string;
-    gasLimit?: TypeValNum;
-    gasPrice?: TypeValNum;
-    maxFeePerGas?: TypeValNum;
-    maxPriorityFeePerGas?: TypeValNum;
-    value?: TypeValNum;
-    nonce?: TypeValNum;
-    chainId?: TypeValNum;
-    type?: TypeValNum;
-};
-
 type TypeSend = {
     method: string;
     params: any[];
@@ -34,7 +19,7 @@ type TypeParamInit = {
  * @param socket [optional] socket for lib
  * @param reconnect [optional] reconnect for network type ws/ipc
  */
-declare const _default$2: ({ urlRpc, socket, reconnect }: TypeParamInit) => {
+declare const _default$1: ({ urlRpc, socket, reconnect }: TypeParamInit) => {
     send: (data: TypeSend) => Promise<any>;
     sendBatch: (data: TypeSend[]) => Promise<any>;
     on: {
@@ -47,12 +32,6 @@ declare const _default$2: ({ urlRpc, socket, reconnect }: TypeParamInit) => {
     };
     isReady: () => Promise<unknown>;
     request: <Method extends string, ResultType = ReturnType<web3_types.EthExecutionAPI[Method]>>(request: web3_types.Web3APIPayload<web3_types.EthExecutionAPI, Method>) => Promise<web3_types.JsonRpcResponseWithResult<ResultType>>;
-};
-
-declare const _default$1: {
-    libEVM: {
-        signTx: (tx: TypeTx, pk: Buffer) => Uint8Array;
-    };
 };
 
 declare const _default: {
@@ -86,11 +65,6 @@ declare const _default: {
         isReady: () => Promise<unknown>;
         request: <Method extends string, ResultType = ReturnType<web3_types.EthExecutionAPI[Method]>>(request: web3_types.Web3APIPayload<web3_types.EthExecutionAPI, Method>) => Promise<web3_types.JsonRpcResponseWithResult<ResultType>>;
     };
-    wallet: {
-        libEVM: {
-            signTx: (tx: TypeTx, pk: Buffer) => Uint8Array;
-        };
-    };
 };
 
-export { _default as default, _default$2 as provider, _default$1 as wallet };
+export { _default as default, _default$1 as provider };
