@@ -8,6 +8,7 @@ export default (url: string, socketOpt: object, reconnectOpt: object) => {
   })
 
   const on = client["on"]
+  const disconnect = () => client.disconnect()
   const isReady = async () => {
     return new Promise((resolve) => {
       client.once("connect", () => resolve(true))
@@ -15,5 +16,5 @@ export default (url: string, socketOpt: object, reconnectOpt: object) => {
   }
   const request = client["request"]
 
-  return { on, isReady, request }
+  return { on, disconnect, isReady, request }
 }

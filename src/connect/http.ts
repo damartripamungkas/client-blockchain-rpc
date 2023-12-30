@@ -1,6 +1,7 @@
 export default (url: string, socketOpt: object) => {
   const on = () => {}
   const isReady = () => true
+  const disconnect = () => true
   const request = async (body: any) => {
     const init = {
       method: "POST",
@@ -14,5 +15,5 @@ export default (url: string, socketOpt: object) => {
     return jsonData
   }
 
-  return { on, isReady, request }
+  return { on, isReady, disconnect, request }
 }
