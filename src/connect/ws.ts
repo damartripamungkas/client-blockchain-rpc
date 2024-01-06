@@ -8,12 +8,11 @@ export default (url: string, socketOpt: object, reconnectOpt: object) => {
   })
 
   const on = client["on"]
-  const disconnect = () => client.disconnect()
-  const isReady = async () => {
-    return new Promise((resolve) => {
-      client.once("connect", () => resolve(true))
-    })
-  }
+  const disconnect = client["disconnect"]
   const request = client["request"]
+  const isReady = () => {
+    client.connect()
+    return true
+  }
   return { on, disconnect, isReady, request }
 }
