@@ -30,8 +30,8 @@ declare const _default$1: ({ urlRpc, socket, reconnect }: TypeParamInit) => {
         <T = web3_types.JsonRpcResult>(type: "message", listener: web3_types.Web3Eip1193ProviderEventCallback<web3_types.ProviderMessage> | web3_types.Web3ProviderMessageEventCallback<T>): void;
         <T_1 = web3_types.JsonRpcResult>(type: string, listener: web3_types.Web3Eip1193ProviderEventCallback<unknown> | web3_types.Web3ProviderEventCallback<T_1>): void;
     };
-    disconnect: () => void;
-    isReady: () => Promise<unknown>;
+    disconnect: (code?: number, data?: string) => void;
+    isReady: () => boolean;
     request: <Method extends string, ResultType = ReturnType<web3_types.EthExecutionAPI[Method]>>(request: web3_types.Web3APIPayload<web3_types.EthExecutionAPI, Method>) => Promise<web3_types.JsonRpcResponseWithResult<ResultType>>;
 };
 
@@ -63,8 +63,8 @@ declare const _default: {
             <T = web3_types.JsonRpcResult>(type: "message", listener: web3_types.Web3Eip1193ProviderEventCallback<web3_types.ProviderMessage> | web3_types.Web3ProviderMessageEventCallback<T>): void;
             <T_1 = web3_types.JsonRpcResult>(type: string, listener: web3_types.Web3Eip1193ProviderEventCallback<unknown> | web3_types.Web3ProviderEventCallback<T_1>): void;
         };
-        disconnect: () => void;
-        isReady: () => Promise<unknown>;
+        disconnect: (code?: number, data?: string) => void;
+        isReady: () => boolean;
         request: <Method extends string, ResultType = ReturnType<web3_types.EthExecutionAPI[Method]>>(request: web3_types.Web3APIPayload<web3_types.EthExecutionAPI, Method>) => Promise<web3_types.JsonRpcResponseWithResult<ResultType>>;
     };
 };

@@ -29,13 +29,12 @@ var ipc_default = (url, socketOpt, reconnectOpt) => {
     // overrides because is calling without agreement
   });
   const on = client["on"];
-  const disconnect = () => client.disconnect();
-  const isReady = async () => {
-    return new Promise((resolve) => {
-      client.once("connect", () => resolve(true));
-    });
-  };
+  const disconnect = client["disconnect"];
   const request = client["request"];
+  const isReady = () => {
+    client.connect();
+    return true;
+  };
   return { on, disconnect, isReady, request };
 };
 
@@ -50,13 +49,12 @@ var ws_default = (url, socketOpt, reconnectOpt) => {
     // overrides because is calling without agreement
   });
   const on = client["on"];
-  const disconnect = () => client.disconnect();
-  const isReady = async () => {
-    return new Promise((resolve) => {
-      client.once("connect", () => resolve(true));
-    });
-  };
+  const disconnect = client["disconnect"];
   const request = client["request"];
+  const isReady = () => {
+    client.connect();
+    return true;
+  };
   return { on, disconnect, isReady, request };
 };
 
