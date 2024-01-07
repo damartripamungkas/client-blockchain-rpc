@@ -1,28 +1,21 @@
 const { provider } = require("..");
-
 const init = provider({
-  urlRpc: "https://bscrpc.com",
+  url: "https://bscrpc.com",
 });
 
 (async () => {
-  // single request
-  const chainId = await init.send({
-    method: "eth_chainId",
-    params: [],
-    formatReturn: parseInt,
-  });
-
-  // batch request
-  const resBatch = await init.sendBatch([
+  const req = await init.sendBatch([
+    {
+      method: "eth_blockNumber",
+      params: [],
+      formatReturn: BigInt,
+    },
     {
       method: "eth_chainId",
       params: [],
-      formatReturn: BigInt,
-    },
-    {
-      method: "eth_gasPrice",
-      params: [],
-      formatReturn: BigInt,
+      formatReturn: parseInt,
     },
   ]);
+
+  console.log({ req });
 })();
