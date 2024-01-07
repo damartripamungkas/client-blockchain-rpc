@@ -24,72 +24,18 @@ __export(src_exports, {
 });
 module.exports = __toCommonJS(src_exports);
 
-// src/connect/http.ts
-var http_default = (url, socketOpt) => {
-  const on = () => {
-  };
-  const isReady = () => true;
-  const disconnect = () => true;
-  const request = async (body) => {
-    const init = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-      ...socketOpt
-    };
-    const res = await fetch(url, init);
-    const jsonData = await res.json();
-    return jsonData;
-  };
-  return { on, isReady, disconnect, request };
-};
-
-// src/connect/ipc.ts
-var import_web3_providers_ipc = require("web3-providers-ipc");
-var ipc_default = (url, socketOpt, reconnectOpt) => {
-  const client = new import_web3_providers_ipc.IpcProvider(url, socketOpt, reconnectOpt);
-  Object.assign(client, {
-    _getChainId: () => new Promise((res) => res([])),
-    // overrides because is calling without agreement
-    _getAccounts: () => new Promise((res) => res([]))
-    // overrides because is calling without agreement
-  });
-  const on = client["on"];
-  const disconnect = client["disconnect"];
-  const request = client["request"];
-  const isReady = () => {
-    client.connect();
-    return true;
-  };
-  return { on, disconnect, isReady, request };
-};
-
-// src/connect/ws.ts
-var import_web3_providers_ws = require("web3-providers-ws");
-var ws_default = (url, socketOpt, reconnectOpt) => {
-  const client = new import_web3_providers_ws.WebSocketProvider(url, socketOpt, reconnectOpt);
-  Object.assign(client, {
-    _getChainId: () => new Promise((res) => res([])),
-    // overrides because is calling without agreement
-    _getAccounts: () => new Promise((res) => res([]))
-    // overrides because is calling without agreement
-  });
-  const on = client["on"];
-  const disconnect = client["disconnect"];
-  const request = client["request"];
-  const isReady = () => {
-    client.connect();
-    return true;
-  };
-  return { on, disconnect, isReady, request };
-};
-
 // src/provider.ts
-var provider_default = ({ urlRpc, socket, reconnect }) => {
-  socket = socket ? socket : {};
-  reconnect = reconnect ? reconnect : {};
-  const state = { nextId: 0, maxSafeNextId: Number["MAX_SAFE_INTEGER"] };
-  const client = Object.assign({});
+var import_web3_providers_ipc = require("web3-providers-ipc");
+var import_web3_providers_http = require("web3-providers-http");
+var import_web3_providers_ws = require("web3-providers-ws");
+var import_web3 = require("web3");
+var provider_default = ({ url, socket, reconnect }) => {
+  if (!socket)
+    socket = {};
+  if (!reconnect)
+    reconnect = {};
+  let state = { nextId: 0, maxSafeNextId: Number["MAX_SAFE_INTEGER"] };
+  let provider;
   const hookNextId = () => {
     if (state["nextId"] >= state["maxSafeNextId"]) {
       state["nextId"] = 0;
@@ -103,25 +49,28 @@ var provider_default = ({ urlRpc, socket, reconnect }) => {
       return result["result"];
     return returnFormat(result["result"]);
   };
-  if (urlRpc.startsWith("http")) {
-    Object.assign(client, http_default(urlRpc, socket));
-  } else if (urlRpc.startsWith("ws")) {
-    Object.assign(client, ws_default(urlRpc, socket, reconnect));
-  } else if (urlRpc.endsWith(".ipc")) {
-    Object.assign(client, ipc_default(urlRpc, socket, reconnect));
+  if (url.startsWith("http")) {
+    provider = new import_web3_providers_http.HttpProvider(url);
+  } else if (url.startsWith("ws")) {
+    provider = new import_web3_providers_ws.WebSocketProvider(url, socket, reconnect);
+  } else if (url.endsWith(".ipc")) {
+    provider = new import_web3_providers_ipc.IpcProvider(url, socket, reconnect);
   } else {
     throw `network type is not supported, only support http/ws/.ipc`;
   }
-  return {
-    ...client,
+  const web3 = new import_web3.Web3(provider);
+  const client = provider;
+  const res = {
+    client,
+    web3,
     send: async (data) => {
-      const res = await client.request({
+      const res2 = await client.request({
         jsonrpc: "2.0",
         id: hookNextId(),
         method: data["method"],
         params: data["params"]
       });
-      return returnSend(res, data["formatReturn"]);
+      return returnSend(res2, data["formatReturn"]);
     },
     sendBatch: async (data) => {
       const bodyJsonRpc = data.map((it) => ({
@@ -130,10 +79,11 @@ var provider_default = ({ urlRpc, socket, reconnect }) => {
         method: it["method"],
         params: it["params"]
       }));
-      const res = await client.request(bodyJsonRpc);
-      return res.sort((a, b) => a["id"] - b["id"]).map((it, index) => returnSend(it, data[index]["formatReturn"]));
+      const result = await client.request(bodyJsonRpc);
+      return result.map((it, index) => returnSend(it, data[index]["formatReturn"]));
     }
   };
+  return res;
 };
 
 // src/index.ts

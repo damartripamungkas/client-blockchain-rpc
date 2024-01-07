@@ -1,3 +1,8 @@
+import * as web3 from 'web3';
+import { Web3 } from 'web3';
+import * as web3_eth from 'web3-eth';
+import * as web3_providers_ws from 'web3-providers-ws';
+import { WebSocketProvider } from 'web3-providers-ws';
 import * as web3_types from 'web3-types';
 
 type TypeSend = {
@@ -6,7 +11,7 @@ type TypeSend = {
     formatReturn?: (pureValue: any) => any;
 };
 type TypeParamInit = {
-    urlRpc: string;
+    url: string;
     socket?: object;
     reconnect?: {
         autoReconnect?: boolean;
@@ -14,58 +19,25 @@ type TypeParamInit = {
         maxAttempts?: number;
     };
 };
+
 /**
- * @param urlRpc url rpc node blockchain
+ * @param url url rpc node blockchain
  * @param socket [optional] socket for lib
  * @param reconnect [optional] reconnect for network type ws/ipc
  */
-declare const _default$1: ({ urlRpc, socket, reconnect }: TypeParamInit) => {
+declare const _default$1: ({ url, socket, reconnect }: TypeParamInit) => {
+    client: WebSocketProvider<web3.EthExecutionAPI>;
+    web3: Web3<web3_eth.RegisteredSubscription>;
     send: (data: TypeSend) => Promise<any>;
     sendBatch: (data: TypeSend[]) => Promise<any>;
-    on: {
-        (type: "disconnect", listener: web3_types.Web3Eip1193ProviderEventCallback<web3_types.ProviderRpcError>): void;
-        (type: "connect", listener: web3_types.Web3Eip1193ProviderEventCallback<web3_types.ProviderConnectInfo>): void;
-        (type: "chainChanged", listener: web3_types.Web3Eip1193ProviderEventCallback<string>): void;
-        (type: "accountsChanged", listener: web3_types.Web3Eip1193ProviderEventCallback<string[]>): void;
-        <T = web3_types.JsonRpcResult>(type: "message", listener: web3_types.Web3Eip1193ProviderEventCallback<web3_types.ProviderMessage> | web3_types.Web3ProviderMessageEventCallback<T>): void;
-        <T_1 = web3_types.JsonRpcResult>(type: string, listener: web3_types.Web3Eip1193ProviderEventCallback<unknown> | web3_types.Web3ProviderEventCallback<T_1>): void;
-    };
-    disconnect: (code?: number, data?: string) => void;
-    isReady: () => boolean;
-    request: <Method extends string, ResultType = ReturnType<web3_types.EthExecutionAPI[Method]>>(request: web3_types.Web3APIPayload<web3_types.EthExecutionAPI, Method>) => Promise<web3_types.JsonRpcResponseWithResult<ResultType>>;
 };
 
 declare const _default: {
-    provider: ({ urlRpc, socket, reconnect }: {
-        urlRpc: string;
-        socket?: object;
-        reconnect?: {
-            autoReconnect?: boolean;
-            delay?: number;
-            maxAttempts?: number;
-        };
-    }) => {
-        send: (data: {
-            method: string;
-            params: any[];
-            formatReturn?: (pureValue: any) => any;
-        }) => Promise<any>;
-        sendBatch: (data: {
-            method: string;
-            params: any[];
-            formatReturn?: (pureValue: any) => any;
-        }[]) => Promise<any>;
-        on: {
-            (type: "disconnect", listener: web3_types.Web3Eip1193ProviderEventCallback<web3_types.ProviderRpcError>): void;
-            (type: "connect", listener: web3_types.Web3Eip1193ProviderEventCallback<web3_types.ProviderConnectInfo>): void;
-            (type: "chainChanged", listener: web3_types.Web3Eip1193ProviderEventCallback<string>): void;
-            (type: "accountsChanged", listener: web3_types.Web3Eip1193ProviderEventCallback<string[]>): void;
-            <T = web3_types.JsonRpcResult>(type: "message", listener: web3_types.Web3Eip1193ProviderEventCallback<web3_types.ProviderMessage> | web3_types.Web3ProviderMessageEventCallback<T>): void;
-            <T_1 = web3_types.JsonRpcResult>(type: string, listener: web3_types.Web3Eip1193ProviderEventCallback<unknown> | web3_types.Web3ProviderEventCallback<T_1>): void;
-        };
-        disconnect: (code?: number, data?: string) => void;
-        isReady: () => boolean;
-        request: <Method extends string, ResultType = ReturnType<web3_types.EthExecutionAPI[Method]>>(request: web3_types.Web3APIPayload<web3_types.EthExecutionAPI, Method>) => Promise<web3_types.JsonRpcResponseWithResult<ResultType>>;
+    provider: ({ url, socket, reconnect }: TypeParamInit) => {
+        client: web3_providers_ws.default<web3_types.EthExecutionAPI>;
+        web3: web3.default<web3_eth.RegisteredSubscription>;
+        send: (data: TypeSend) => Promise<any>;
+        sendBatch: (data: TypeSend[]) => Promise<any>;
     };
 };
 
