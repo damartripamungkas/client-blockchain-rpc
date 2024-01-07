@@ -40,6 +40,8 @@
   },
   "dependencies": {
     "node-interval-return": "^1.0.0",
+    "web3": "^4.3.0",
+    "web3-providers-http": "^4.1.0",
     "web3-providers-ipc": "^4.0.7",
     "web3-providers-ws": "^4.0.7"
   }
