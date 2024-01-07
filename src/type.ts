@@ -13,3 +13,19 @@ export type TypeTx = {
   chainId?: TypeValNum
   type?: TypeValNum
 }
+
+export type TypeSend = {
+  method: string
+  params: any[]
+  formatReturn?: (pureValue: any) => any
+}
+
+export type TypeParamInit = {
+  url: string
+  socket?: object
+  reconnect?: {
+    autoReconnect?: boolean
+    delay?: number
+    maxAttempts?: number
+  }
+}
