@@ -4,7 +4,7 @@
   "description": "Simple client blockchain rpc",
   "scripts": {
     "test": "node ./test/test.js",
-    "build": "rm -rf dist/ && tsup ./src/index.ts --format cjs,esm --dts",
+    "build": "tsup",
     "publish:npm": "npm run build && npm publish"
   },
   "homepage": "https://github.com/damartripamungkas/client-blockchain-rpc",
@@ -28,6 +28,7 @@
   "files": [
     "dist"
   ],
+  "publisher": "damartripamungkas",
   "author": "damartripamungkas",
   "license": "MIT",
   "engines": {
@@ -36,11 +37,12 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.16.0",
     "@typescript-eslint/parser": "^6.16.0",
-    "eslint": "^8.56.0"
+    "eslint": "^8.56.0",
+    "tsup": "^8.1.0"
   },
   "dependencies": {
     "node-interval-return": "^1.0.0",
-    "web3": "^4.3.0",
+    "web3": "^4.10.0",
     "web3-providers-http": "^4.1.0",
     "web3-providers-ipc": "^4.0.7",
     "web3-providers-ws": "^4.0.7"
