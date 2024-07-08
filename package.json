@@ -1,6 +1,6 @@
 {
   "name": "client-blockchain-rpc",
-  "version": "1.1.0",
+  "version": "1.1.5",
   "description": "Simple client blockchain rpc",
   "scripts": {
     "test": "node ./test/test.js",
