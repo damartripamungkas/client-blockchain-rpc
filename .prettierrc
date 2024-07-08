@@ -20,7 +20,8 @@
         "useTabs": false,
         "semi": true,
         "arrowParens": "always",
-        "bracketSameLine": false
+        "bracketSameLine": false,
+        "trailingComma": "none"
       }
     },
     {
