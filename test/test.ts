@@ -1,4 +1,4 @@
-import { Provider } from "../dist/src/"
+import { Provider } from ".."
 const provider = new Provider(`wss://ethereum-rpc.publicnode.com`)
 
 const run = async () => {
