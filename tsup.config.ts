@@ -1,7 +1,7 @@
 import { defineConfig } from "tsup"
 
 export default defineConfig({
-  outDir: `./dist/src`,
+  outDir: `./dist`,
   entry: [`./src/index.ts`],
   format: [`cjs`, `esm`, `iife`],
   cjsInterop: true,
