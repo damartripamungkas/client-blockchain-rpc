@@ -1,87 +1,134 @@
-<h1 align="center">
-    CLIENT-BLOCKCHAIN-RPC
-</h1>
+<h1 align="center">CLIENT-BLOCKCHAIN-RPC</h1>
 
 <p align="center">
-  <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/damartripamungkas/client-blockchain-rpc?color=04D361&labelColor=000000">
-  
-  <a href="#">
-    <img alt="Made by" src="https://img.shields.io/static/v1?label=made%20by&message=damartripamungkas&color=04D361&labelColor=000000">
-  </a>
-  
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/damartripamungkas/client-blockchain-rpc?color=04D361&labelColor=000000">
-  
-  <a href="#">
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/damartripamungkas/client-blockchain-rpc?color=04D361&labelColor=000000">
-  </a>
+  <i>⚡ A lightweight, multi-protocol blockchain RPC client for EVM, Solana, and more ⚡</i>
 </p>
 
-<br>
+<p align="center">
+  <a href="https://www.npmjs.com/package/client-blockchain-rpc">
+    <img alt="npm version" src="https://img.shields.io/npm/v/client-blockchain-rpc?color=04D361&labelColor=000000">
+  </a>
+  <a href="https://www.npmjs.com/package/client-blockchain-rpc">
+    <img alt="npm downloads" src="https://img.shields.io/npm/dw/client-blockchain-rpc?color=04D361&labelColor=000000">
+  </a>
+  <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/damartripamungkas/client-blockchain-rpc?color=04D361&labelColor=000000">
+  <img alt="Repo Size" src="https://img.shields.io/github/repo-size/damartripamungkas/client-blockchain-rpc?color=04D361&labelColor=000000">
+  <img alt="License" src="https://img.shields.io/github/license/damartripamungkas/client-blockchain-rpc?color=04D361&labelColor=000000">
+</p>
 
-### 📖 Description :
+---
 
-This very light package was created for those of you who want to interact directly with the EVM, SOLANA, and other blockchain.
+### 📖 Overview
 
-- support network http
-- support network websocket
-- support network ipc
+**client-blockchain-rpc** is a minimal yet powerful RPC client for interacting directly with blockchain nodes.  
+It supports **HTTP**, **WebSocket**, and **IPC** connections, with a consistent API for EVM-based chains, Solana, and more.
 
-### 💻 Step to install :
+### 🎯 Why This Library?
 
-```
+- **Unified API** — No need to learn different libraries for different chains
+- **Multi-Protocol** — Switch between HTTP, WS, and IPC without code changes
+- **Tiny & Fast** — Zero heavy dependencies
+- **Cross-Platform** — Works on Node.js, Bun, and Deno
+- **Production Ready** — Used in real trading bots & blockchain tools
+
+### ✨ Features
+
+| Feature                    | Description                 |
+| -------------------------- | --------------------------- |
+| **Multi-Protocol Support** | HTTP, WebSocket, IPC        |
+| **Multi-Chain Ready**      | EVM, Solana, and more       |
+| **Lightweight**            | No unnecessary dependencies |
+| **Flexible API**           | Single, batch, subscription |
+| **Cross-Platform**         | Node.js, Bun, and Deno      |
+
+### 🌐 Supported Networks
+
+| Blockchain                             | Protocols Supported    |
+| -------------------------------------- | ---------------------- |
+| **EVM** (Ethereum, BSC, Polygon, etc.) | HTTP / WebSocket / IPC |
+| **Solana**                             | HTTP / WebSocket       |
+| **Others**                             | Custom RPC endpoints   |
+
+### 📦 Installation
+
+**Using npm**
+
+```bash
 npm install client-blockchain-rpc
 ```
 
-### ✏️ Example :
+**Using Yarn**
 
-```javascript
-import { provider } from "client-blockchain-rpc";
-const init = provider({
-  urlRpc: "https://bscrpc.com",
+```bash
+yarn add client-blockchain-rpc
+```
+
+**Using Bun**
+
+```bash
+bun add client-blockchain-rpc
+```
+
+### 🚀 Quick Start
+
+```typescript
+import { Provider } from "client-blockchain-rpc";
+
+const provider = new Provider(`ws://localhost:8545`);
+
+// Single request
+const chainId = await provider.send({
+  method: `eth_chainId`,
+  params: [],
+  formatReturn: parseInt,
 });
+
+// Batch request
+const resBatch = await provider.sendBatch([
+  { method: `eth_chainId`, params: [], formatReturn: BigInt },
+  { method: `eth_gasPrice`, params: [], formatReturn: BigInt },
+]);
+
+// Subscription
+provider.subscribe(
+  { method: `eth_subscribe`, params: [`newHeads`] },
+  true,
+  (data, subsId) => {
+    console.log(subsId, data);
+  }
+);
 ```
 
-#### Usage
+📎 **More examples:** See the [examples](./test) directory.
 
-```javascript
-const { provider } = require("..");
+### 📚 API Reference
 
-const init = provider({
-  urlRpc: "https://bscrpc.com",
-});
+#### `new Provider(endpoint: string)`
 
-(async () => {
-  // single request
-  const chainId = await init.send({
-    method: "eth_chainId",
-    params: [],
-    formatReturn: parseInt,
-  });
+Create a provider instance.
 
-  // batch request
-  const resBatch = await init.sendBatch([
-    {
-      method: "eth_chainId",
-      params: [],
-      formatReturn: BigInt,
-    },
-    {
-      method: "eth_gasPrice",
-      params: [],
-      formatReturn: BigInt,
-    },
-  ]);
-})();
-```
+#### `.send({ method, params, formatReturn })`
 
-full example see [here](./test)
+Send a single RPC request.
 
-### 🧾 Pre-Requisistes :
+#### `.sendBatch(requests[])`
 
-```
-node.js >= 18
-```
+Send multiple RPC requests in one batch.
 
-### 📝 License :
+#### `.subscribe({ method, params }, autoReconnect, callback)`
+
+Subscribe to a WebSocket event.
+
+#### 🧾 Requirements
+
+- **Node.js**
+- **Bun** _(optional)_
+- **Deno** _(optional)_
+
+### 📜 License
 
 Licensed under the [MIT License](./LICENSE).
+
+### 🌟 Support
+
+If you find this project useful, please give it a ⭐ on GitHub and share it with the community.
