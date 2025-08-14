@@ -1,7 +1,7 @@
 {
   "name": "client-blockchain-rpc",
   "version": "1.1.5",
-  "description": "Simple client blockchain rpc",
+  "description": "Client blockchain rpc",
   "scripts": {
     "test": "node ./test/test.js",
     "build": "tsup",
@@ -31,20 +31,19 @@
   "publisher": "damartripamungkas",
   "author": "damartripamungkas",
   "license": "MIT",
-  "engines": {
-    "node": ">=18.0.0"
-  },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.16.0",
-    "@typescript-eslint/parser": "^6.16.0",
-    "eslint": "^8.56.0",
-    "tsup": "^8.1.0"
+    "@eslint/js": "^9.33.0",
+    "eslint": "^9.33.0",
+    "globals": "^16.3.0",
+    "jiti": "^2.5.1",
+    "tsup": "^8.5.0",
+    "typescript-eslint": "^8.39.1"
   },
   "dependencies": {
-    "node-interval-return": "^1.0.0",
-    "web3": "^4.10.0",
-    "web3-providers-http": "^4.1.0",
+    "node-interval-return": "^1.2.7",
+    "web3": "^4.16.0",
+    "web3-providers-http": "^4.2.0",
     "web3-providers-ipc": "^4.0.7",
-    "web3-providers-ws": "^4.0.7"
+    "web3-providers-ws": "^4.0.8"
   }
 }
