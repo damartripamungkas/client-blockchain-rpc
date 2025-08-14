@@ -1,48 +1,22 @@
 {
   "overrides": [
     {
-      "files": "*.json",
+      "files": "*.{json,sol}",
       "options": {
-        "tabWidth": 2
-      }
-    },
-    {
-      "files": "*.ini",
-      "options": {
-        "tabWidth": 2
-      }
-    },
-    {
-      "files": "*.js",
-      "options": {
-        "printWidth": 200,
         "tabWidth": 2,
-        "useTabs": false,
-        "semi": true,
-        "arrowParens": "always",
-        "bracketSameLine": false,
-        "trailingComma": "none"
+        "printWidth": 200
       }
     },
     {
-      "files": "*.ts",
+      "files": "*.{tsx,ts,js}",
       "options": {
-        "printWidth": 200,
+        "printWidth": 300,
         "tabWidth": 2,
         "useTabs": false,
         "semi": false,
         "arrowParens": "always",
+        "trailingComma": "none",
         "bracketSameLine": false
-      }
-    },
-    {
-      "files": "*.sol",
-      "options": {
-        "printWidth": 400,
-        "tabWidth": 2,
-        "useTabs": true,
-        "singleQuote": false,
-        "bracketSpacing": false
       }
     }
   ]
