@@ -1,6 +1,6 @@
 {
   "name": "client-blockchain-rpc",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Client blockchain rpc",
   "scripts": {
     "test": "bun ./test/test.ts",
