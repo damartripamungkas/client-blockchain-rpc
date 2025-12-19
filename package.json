@@ -1,6 +1,6 @@
 {
   "name": "client-blockchain-rpc",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Lightweight, and type-safe multi-protocol blockchain RPC client for EVM, Solana, and more.",
   "scripts": {
     "test": "bun test",
