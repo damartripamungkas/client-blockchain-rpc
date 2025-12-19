@@ -83,7 +83,31 @@ const provider = new Provider("wss://ethereum-rpc.publicnode.com");
 const chainId = await provider.send(EIP.chainId());
 ```
 
-### 3. Advanced Batch Requests
+### 3. Reformatting Payloads
+
+Sometimes you need a different return format than the default. You can use `PayloadHelper.reformat` to override the formatting logic of any payload.
+
+```typescript
+import {
+  Provider,
+  EthereumPayload as EIP,
+  PayloadHelper,
+} from "client-blockchain-rpc";
+
+const provider = new Provider("https://eth.llamarpc.com");
+
+// Default returns bigint
+const blockNumber = await provider.send(EIP.blockNumber());
+
+// Use reformat to get it as a string instead
+const blockNumberStr = await provider.send(
+  PayloadHelper.reformat(EIP.blockNumber(), (val) => val.toString())
+);
+
+console.log(typeof blockNumberStr); // "string"
+```
+
+### 4. Advanced Batch Requests
 
 Execute multiple calls in a single network round-trip. The results are automatically parsed and typed.
 
@@ -95,9 +119,12 @@ const [block, chainId] = await provider.sendBatch(
   EIP.blockNumber(),
   EIP.chainId()
 );
+
+block; <-- 1000000n
+chainId; <-- 1n
 ```
 
-### 4. WebSocket Subscriptions
+### 5. WebSocket Subscriptions
 
 Handle real-time events with automatic reconnection logic.
 
@@ -113,7 +140,7 @@ provider.subscribe(
 );
 ```
 
-### 5. Custom Error Handling
+### 6. Custom Error Handling
 
 Descriptively catch and handle RPC-level errors.
 
