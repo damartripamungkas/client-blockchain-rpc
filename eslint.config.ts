@@ -13,10 +13,10 @@ export default defineConfig([
       globals: { ...globals.node, Bun: true, Worker: true }
     },
     rules: {
-      quotes: [`warn`, `backtick`], // ⬅️ Tambahkan ini untuk memaksa backtick
-      "@typescript-eslint/no-explicit-any": `off`, // ⬅️ Mengijinkan any
-      "@typescript-eslint/no-unused-vars": `off`, // ⬅️ Mengijinkan deklarasi variable tanpa harus digunakan (typescript)
-      "no-unused-vars": `off` // ⬅️ Mengijinkan deklarasi variable tanpa harus digunakan (javascript)
+      quotes: [`warn`, `backtick`],
+      "@typescript-eslint/no-explicit-any": `off`,
+      "@typescript-eslint/no-unused-vars": `off`,
+      "no-unused-vars": `off`
     }
   }
 ])
