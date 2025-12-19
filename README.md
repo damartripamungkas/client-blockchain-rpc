@@ -1,134 +1,190 @@
-<h1 align="center">CLIENT-BLOCKCHAIN-RPC</h1>
+<h1 align="center">Client Blockchain RPC</h1>
 
 <p align="center">
-  <i>⚡ A lightweight, multi-protocol blockchain RPC client for EVM, Solana, and more ⚡</i>
+  <i>A professional, lightweight, and type-safe multi-protocol blockchain RPC client</i>
 </p>
 
 <p align="center">
   <a href="https://www.npmjs.com/package/client-blockchain-rpc">
-    <img alt="npm version" src="https://img.shields.io/npm/v/client-blockchain-rpc?color=04D361&labelColor=000000">
+    <img alt="npm version" src="https://img.shields.io/npm/v/client-blockchain-rpc?style=flat-square&color=007bff">
   </a>
   <a href="https://www.npmjs.com/package/client-blockchain-rpc">
-    <img alt="npm downloads" src="https://img.shields.io/npm/dw/client-blockchain-rpc?color=04D361&labelColor=000000">
+    <img alt="npm downloads" src="https://img.shields.io/npm/dm/client-blockchain-rpc?style=flat-square&color=28a745">
   </a>
-  <img alt="GitHub top language" src="https://img.shields.io/github/languages/top/damartripamungkas/client-blockchain-rpc?color=04D361&labelColor=000000">
-  <img alt="Repo Size" src="https://img.shields.io/github/repo-size/damartripamungkas/client-blockchain-rpc?color=04D361&labelColor=000000">
-  <img alt="License" src="https://img.shields.io/github/license/damartripamungkas/client-blockchain-rpc?color=04D361&labelColor=000000">
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-Ready-blue?style=flat-square&logo=typescript">
+  <img alt="License" src="https://img.shields.io/github/license/damartripamungkas/client-blockchain-rpc?style=flat-square&color=ffc107">
 </p>
 
 ---
 
-### 📖 Overview
+## 📖 Introduction
 
-**client-blockchain-rpc** is a minimal yet powerful RPC client for interacting directly with blockchain nodes.  
-It supports **HTTP**, **WebSocket**, and **IPC** connections, with a consistent API for EVM-based chains, Solana, and more.
+**Client Blockchain RPC** is a high-performance, modular RPC client designed for developers who need a reliable way to interact with various blockchain protocols. Whether you are building a DeFi dashboard, a trading bot, or a cross-chain aggregator, this library provides a unified interface for **HTTP**, **WebSocket**, and **IPC** connections.
 
-### 🎯 Why This Library?
+---
 
-- **Unified API** — No need to learn different libraries for different chains
-- **Multi-Protocol** — Switch between HTTP, WS, and IPC without code changes
-- **Tiny & Fast** — Zero heavy dependencies
-- **Cross-Platform** — Works on Node.js, Bun, and Deno
-- **Production Ready** — Used in real trading bots & blockchain tools
-
-### ✨ Features
-
-| Feature                    | Description                 |
-| -------------------------- | --------------------------- |
-| **Multi-Protocol Support** | HTTP, WebSocket, IPC        |
-| **Multi-Chain Ready**      | EVM, Solana, and more       |
-| **Lightweight**            | No unnecessary dependencies |
-| **Flexible API**           | Single, batch, subscription |
-| **Cross-Platform**         | Node.js, Bun, and Deno      |
-
-### 🌐 Supported Networks
-
-| Blockchain                             | Protocols Supported    |
-| -------------------------------------- | ---------------------- |
-| **EVM** (Ethereum, BSC, Polygon, etc.) | HTTP / WebSocket / IPC |
-| **Solana**                             | HTTP / WebSocket       |
-| **Others**                             | Custom RPC endpoints   |
-
-### 📦 Installation
-
-**Using npm**
+## 📦 Installation
 
 ```bash
+# Using npm
 npm install client-blockchain-rpc
-```
 
-**Using Yarn**
-
-```bash
+# Using yarn
 yarn add client-blockchain-rpc
-```
 
-**Using Bun**
-
-```bash
+# Using bun
 bun add client-blockchain-rpc
 ```
 
-### 🚀 Quick Start
+---
+
+## 🚀 Quick Start
+
+### 1. High-Level RPC Wrappers
+
+The easiest way to interact with a blockchain. Wrappers provide an intuitive, async/await interface for all standard methods.
+
+#### Ethereum (EVM)
 
 ```typescript
-import { Provider } from "client-blockchain-rpc";
+import { Provider, EthereumRpc } from "client-blockchain-rpc";
 
-const provider = new Provider(`ws://localhost:8545`);
+const eth = new EthereumRpc(new Provider("https://eth.llamarpc.com"));
 
-// Single request
-const chainId = await provider.send({
-  method: `eth_chainId`,
-  params: [],
-  formatReturn: parseInt,
-});
+const blockNumber = await eth.blockNumber();
+const balance = await eth.getBalance("0xd8dA...6045");
+console.log(`Block: ${blockNumber}, Balance: ${balance} wei`);
+```
 
-// Batch request
-const resBatch = await provider.sendBatch([
-  { method: `eth_chainId`, params: [], formatReturn: BigInt },
-  { method: `eth_gasPrice`, params: [], formatReturn: BigInt },
-]);
+#### Solana
 
-// Subscription
+```typescript
+import { Provider, SolanaRpc } from "client-blockchain-rpc";
+
+const solana = new SolanaRpc(
+  new Provider("https://api.mainnet-beta.solana.com")
+);
+
+const balance = await solana.getBalance("vines1...7iY");
+const version = await solana.getVersion();
+console.log(`Balance: ${balance} lamports, Version: ${version["solana-core"]}`);
+```
+
+### 2. Using Providers & Payloads
+
+For advanced usage, you can use the `Provider` directly with `Payload` builders. This is useful for custom formatting or manual request control.
+
+```typescript
+import { Provider, EthereumPayload as EIP } from "client-blockchain-rpc";
+
+const provider = new Provider("wss://ethereum-rpc.publicnode.com");
+
+// Use the payload builder directly
+const chainId = await provider.send(EIP.chainId());
+```
+
+### 3. Advanced Batch Requests
+
+Execute multiple calls in a single network round-trip. The results are automatically parsed and typed.
+
+```typescript
+import { EthereumPayload as EIP } from "client-blockchain-rpc";
+
+// Execute multiple requests at once
+const [block, chainId] = await provider.sendBatch(
+  EIP.blockNumber(),
+  EIP.chainId()
+);
+```
+
+### 4. WebSocket Subscriptions
+
+Handle real-time events with automatic reconnection logic.
+
+```typescript
+import { EthereumPayload as EIP } from "client-blockchain-rpc";
+
 provider.subscribe(
-  { method: `eth_subscribe`, params: [`newHeads`] },
-  true,
+  EIP.subscribe("newHeads"),
+  true, // autoReconnect
   (data, subsId) => {
-    console.log(subsId, data);
+    console.log(`New block in subscription ${subsId}:`, data.number);
   }
 );
 ```
 
-📎 **More examples:** See the [examples](./test) directory.
+### 5. Custom Error Handling
 
-### 📚 API Reference
+Descriptively catch and handle RPC-level errors.
 
-#### `new Provider(endpoint: string)`
+```typescript
+try {
+  await eth.getBalance("invalid-address");
+} catch (error) {
+  // Descriptive error message from the node
+  console.error("RPC Error:", error);
+}
+```
 
-Create a provider instance.
+---
 
-#### `.send({ method, params, formatReturn })`
+## 🧩 Architecture
 
-Send a single RPC request.
+The library follows a layered architecture to ensure maximum flexibility and maintainability.
 
-#### `.sendBatch(requests[])`
+```mermaid
+graph TD
+    A[Application Layer] --> B[RPC Wrapper Layer]
+    B --> C[Payload Builder Layer]
+    C --> D[Provider Layer]
+    D --> E((Blockchain Node))
 
-Send multiple RPC requests in one batch.
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style E fill:#00d,stroke:#fff,stroke-width:2px,color:#fff
+```
 
-#### `.subscribe({ method, params }, autoReconnect, callback)`
+1. **Provider Layer**: Manages raw connections (HTTP/WS/IPC) and stateful features like auto-reconnect.
+2. **Payload Builder Layer**: Pure, static functions that generate valid JSON-RPC request objects.
+3. **RPC Wrapper Layer**: High-level instance methods that combine providers and payloads for a clean API.
 
-Subscribe to a WebSocket event.
+---
 
-#### 🧾 Requirements
+## ⚙️ Configuration
 
-- **Node.js**
-- **Bun** _(optional)_
-- **Deno** _(optional)_
+The `Provider` constructor handles protocol detection and accepts optional settings.
 
-### 📜 License
+```typescript
+const provider = new Provider("wss://ethereum-rpc.publicnode.com", {
+  reconnect: {
+    autoReconnect: true,
+    delay: 5000,
+    maxAttempts: 10,
+  },
+  options: {
+    // Protocol-specific options (web3-providers-ws, etc.)
+  },
+});
+```
 
-Licensed under the [MIT License](./LICENSE).
+---
 
-### 🌟 Support
+## 🧪 Testing
 
-If you find this project useful, please give it a ⭐ on GitHub and share it with the community.
+We ensure reliability through comprehensive unit and integration tests.
+
+```bash
+# Run the test suite
+bun test
+```
+
+---
+
+## 📜 License
+
+Distributed under the **MIT License**.
+
+---
+
+<p align="center">
+  Made with ❤️ by <a href="https://github.com/damartripamungkas">damartripamungkas</a>
+</p>
